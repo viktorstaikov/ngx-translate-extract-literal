@@ -1,0 +1,60 @@
+{
+  "name": "ngx-translate-extract-literal",
+  "displayName": "ngx-translate-extract-literal",
+  "description": "Extract literals for ngx-traslate for all languages",
+  "version": "0.0.1",
+  "publisher": "viktorstaikov",
+  "engines": {
+    "vscode": "^1.22.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": ["onCommand:extension.extractLiteral"],
+  "main": "./out/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.extractLiteral",
+        "title": "Extract translation literal"
+      }
+    ],
+    "configuration": {
+      "title": "ngx-translate-extract-literal",
+      "properties": {
+        "ngx-translate-extract-literal.translationsDir": {
+          "type": "string",
+          "default": "./src/assets/i18n",
+          "description": "Directory containing json files with translation"
+        },
+        "ngx-translate-extract-literal.locales": {
+          "type": "array",
+          "description": "List of locales used"
+        },
+        "ngx-translate-extract-literal.defaultLocale": {
+          "type": "string",
+          "description":
+            "Selected string will be copied as translation for this language. All other languages will have empty string as translation"
+        },
+        "ngx-translate-extract-literal.setDefaultLanguageTranslationOnly": {
+          "type": "boolean",
+          "default": false,
+          "description":
+            "If this is 'true' then only set empty translation for every non-default language. Otherwise, you will be prompted to enter translation for every language."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6",
+    "tslint": "^5.8.0",
+    "@types/node": "^7.0.43",
+    "@types/mocha": "^2.2.42"
+  }
+}
