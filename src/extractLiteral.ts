@@ -46,38 +46,39 @@ export async function extractLiteral() {
 
   await locales.reduce((chain: Promise<any>, locale: string) => {
     return chain
+      .then(result => {
+        vscode.window.showInformationMessage(result);
+
+        if (locale === settings.defaultLocale && value) {
+          return updateLocale(settings.translationsDir, locale, key, value);
+        }
+        if (setDefaultLanguageTranslationOnly) {
+          return updateLocale(settings.translationsDir, locale, key, '');
+        }
+
+        return vscode.window
+          .showInputBox({
+            prompt: `Enter translation of "${selectedText}" (${key}) for ${locale}`,
+            placeHolder: `${locale.toUpperCase()}`
+          })
+          .then((inputBoxValue: string | undefined) => {
+            const translation = inputBoxValue || '';
+            return updateLocale(
+              settings.translationsDir,
+              locale,
+              key,
+              translation
+            );
+          });
+      })
       .then(
-        result => {
-          vscode.window.showInformationMessage(result);
-
-          if (locale === settings.defaultLocale && value) {
-            return updateLocale(settings.translationsDir, locale, key, value);
-          }
-          if (setDefaultLanguageTranslationOnly) {
-            return updateLocale(settings.translationsDir, locale, key, '');
-          }
-
-          return vscode.window
-            .showInputBox({
-              prompt: `Enter translation of "${selectedText}" (${key}) for ${locale}`,
-              placeHolder: `${locale.toUpperCase()}`
-            })
-            .then((translation: any) => {
-              return updateLocale(
-                settings.translationsDir,
-                locale,
-                key,
-                translation
-              );
-            });
+        msg => {
+          vscode.window.showInformationMessage(msg);
         },
         e => {
           vscode.window.showErrorMessage(e);
         }
-      )
-      .then(e => {
-        vscode.window.showInformationMessage(e);
-      });
+      );
   }, Promise.resolve());
 }
 
@@ -118,7 +119,7 @@ function updateLocale(
   const root = vscode.workspace.rootPath || '';
   const filePath = path.join(root, `${translationsDir}/${locale}.json`);
 
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         reject(err.message);
