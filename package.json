@@ -2,7 +2,7 @@
   "name": "ngx-translate-extract-literal",
   "displayName": "Extract literals",
   "description": "Extract literals for ngx-traslate for all languages",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "viktorstaikov",
   "engines": {
     "vscode": "^1.22.0"
@@ -14,7 +14,13 @@
     "commands": [
       {
         "command": "extension.extractLiteral",
-        "title": "Extract translation literal"
+        "title": "Extract literal: Extract"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.extractLiteral",
+        "key": "cmd+shift+k"
       }
     ],
     "configuration": {

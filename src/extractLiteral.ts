@@ -49,23 +49,26 @@ export async function extractLiteral() {
       result => {
         vscode.window.showInformationMessage(result);
 
-        return locale === settings.defaultLocale
-          ? updateLocale(settings.translationsDir, locale, key, value)
-          : setDefaultLanguageTranslationOnly
-            ? updateLocale(settings.translationsDir, locale, key, '')
-            : vscode.window
-                .showInputBox({
-                  prompt: `Enter translation of "${selectedText}" (${key}) for ${locale}`,
-                  placeHolder: 'something'
-                })
-                .then((translation: any) => {
-                  return updateLocale(
-                    settings.translationsDir,
-                    locale,
-                    key,
-                    translation
-                  );
-                });
+        if (locale === settings.defaultLocale && value) {
+          return updateLocale(settings.translationsDir, locale, key, value);
+        }
+        if (!setDefaultLanguageTranslationOnly) {
+          return updateLocale(settings.translationsDir, locale, key, '');
+        }
+
+        return vscode.window
+          .showInputBox({
+            prompt: `Enter translation of "${selectedText}" (${key}) for ${locale}`,
+            placeHolder: `${locale.toUpperCase()}`
+          })
+          .then((translation: any) => {
+            return updateLocale(
+              settings.translationsDir,
+              locale,
+              key,
+              translation
+            );
+          });
       },
       e => {
         vscode.window.showErrorMessage(e);
