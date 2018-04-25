@@ -45,35 +45,39 @@ export async function extractLiteral() {
     settings.setDefaultLanguageTranslationOnly;
 
   await locales.reduce((chain: Promise<any>, locale: string) => {
-    return chain.then(
-      result => {
-        vscode.window.showInformationMessage(result);
+    return chain
+      .then(
+        result => {
+          vscode.window.showInformationMessage(result);
 
-        if (locale === settings.defaultLocale && value) {
-          return updateLocale(settings.translationsDir, locale, key, value);
-        }
-        if (!setDefaultLanguageTranslationOnly) {
-          return updateLocale(settings.translationsDir, locale, key, '');
-        }
+          if (locale === settings.defaultLocale && value) {
+            return updateLocale(settings.translationsDir, locale, key, value);
+          }
+          if (setDefaultLanguageTranslationOnly) {
+            return updateLocale(settings.translationsDir, locale, key, '');
+          }
 
-        return vscode.window
-          .showInputBox({
-            prompt: `Enter translation of "${selectedText}" (${key}) for ${locale}`,
-            placeHolder: `${locale.toUpperCase()}`
-          })
-          .then((translation: any) => {
-            return updateLocale(
-              settings.translationsDir,
-              locale,
-              key,
-              translation
-            );
-          });
-      },
-      e => {
-        vscode.window.showErrorMessage(e);
-      }
-    );
+          return vscode.window
+            .showInputBox({
+              prompt: `Enter translation of "${selectedText}" (${key}) for ${locale}`,
+              placeHolder: `${locale.toUpperCase()}`
+            })
+            .then((translation: any) => {
+              return updateLocale(
+                settings.translationsDir,
+                locale,
+                key,
+                translation
+              );
+            });
+        },
+        e => {
+          vscode.window.showErrorMessage(e);
+        }
+      )
+      .then(e => {
+        vscode.window.showInformationMessage(e);
+      });
   }, Promise.resolve());
 }
 
