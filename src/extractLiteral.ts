@@ -52,8 +52,14 @@ export async function extractLiteral() {
         if (locale === settings.defaultLocale && value) {
           return updateLocale(settings.translationsDir, locale, key, value);
         }
+        const defaultValue = `[${locale.toUpperCase()}] {selectedText}`;
         if (setDefaultLanguageTranslationOnly) {
-          return updateLocale(settings.translationsDir, locale, key, '');
+          return updateLocale(
+            settings.translationsDir,
+            locale,
+            key,
+            defaultValue
+          );
         }
 
         return vscode.window
@@ -62,7 +68,8 @@ export async function extractLiteral() {
             placeHolder: `${locale.toUpperCase()}`
           })
           .then((inputBoxValue: string | undefined) => {
-            const translation = inputBoxValue || '';
+            const translation = inputBoxValue || defaultValue;
+
             return updateLocale(
               settings.translationsDir,
               locale,
