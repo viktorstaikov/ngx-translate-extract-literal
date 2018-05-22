@@ -25,9 +25,13 @@ Calling out known issues can help limit users opening duplicate issues against y
 
 ## Release Notes
 
+### 0.0.6
+
+* Fix README.md formatting
+
 ### 0.0.5
 
-* Update default value to be in the format "[<locale>] <selectedText>" instead of empty string
+* Update default value to be in the format "[_**locale**_] _**selectedText**_" instead of empty string
 
 ### 0.0.4
 
