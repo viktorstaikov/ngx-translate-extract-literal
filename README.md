@@ -25,6 +25,10 @@ Calling out known issues can help limit users opening duplicate issues against y
 
 ## Release Notes
 
+### 0.0.7
+
+* Fix default value from v0.0.5
+
 ### 0.0.6
 
 * Fix README.md formatting

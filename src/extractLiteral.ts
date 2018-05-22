@@ -52,7 +52,7 @@ export async function extractLiteral() {
         if (locale === settings.defaultLocale && value) {
           return updateLocale(settings.translationsDir, locale, key, value);
         }
-        const defaultValue = `[${locale.toUpperCase()}] {selectedText}`;
+        const defaultValue = `[${locale.toUpperCase()}] ${selectedText}`;
         if (setDefaultLanguageTranslationOnly) {
           return updateLocale(
             settings.translationsDir,
